@@ -1,6 +1,3 @@
-function Start-ExecutionLog($startTime, $logPath, $targetHostname, $targetUser, $commandLine, $isWindows) {
-
-}
 
 function Write-ExecutionLog($startTime, $stopTime, $technique, $testNum, $testName, $testGuid, $testExecutor, $testDescription, $command, $logPath, $targetHostname, $targetUser, $res, $isWindows) {
     if (!(Test-Path $logPath)) {
@@ -26,6 +23,14 @@ function Write-ExecutionLog($startTime, $stopTime, $technique, $testNum, $testNa
     $msg | Export-Csv -Path $LogPath -NoTypeInformation -Append
 }
 
-function Stop-ExecutionLog($startTime, $logPath, $targetHostname, $targetUser, $isWindows) {
-
+function Start-ExecutionLog($startTime, $logPath, $targetHostname, $targetUser, $commandLine, $isWindows) {
+    $message = "[START] $startTime - $targetUser@$targetHostname - CMD: $commandLine"
+    Add-Content -Path $logPath -Value $message
 }
+
+function Stop-ExecutionLog($startTime, $logPath, $targetHostname, $targetUser, $isWindows) {
+    $endTime = Get-Date
+    $message = "[END] $endTime - $targetUser@$targetHostname"
+    Add-Content -Path $logPath -Value $message
+}
+
